@@ -99,6 +99,8 @@ export default function YouScreen() {
                 key={e.key}
                 onPress={() => router.push(`/company/${e.key}`)}
                 style={{
+                  flexBasis: '45%',
+                  flexGrow: 1,
                   borderWidth: 1,
                   borderColor: theme.colors.border,
                   backgroundColor: theme.colors.surface,

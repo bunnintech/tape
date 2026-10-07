@@ -232,10 +232,14 @@ export function Chip({ label, active, onPress }: { label: string; active?: boole
         paddingHorizontal: theme.space.md,
         paddingVertical: theme.space.sm,
         borderRadius: theme.radius.pill,
-        backgroundColor: active ? theme.colors.text : 'transparent',
+        backgroundColor: active ? theme.colors.accentSoft : 'transparent',
       }}
     >
-      <T variant="bodyStrong" color={active ? theme.colors.bg : theme.colors.textSecondary} style={{ fontSize: 14 }}>
+      <T
+        variant="bodyStrong"
+        color={active ? theme.colors.accent : theme.colors.textSecondary}
+        style={{ fontSize: 15 }}
+      >
         {label}
       </T>
     </Press>

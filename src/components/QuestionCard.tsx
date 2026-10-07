@@ -177,6 +177,13 @@ function ChoiceButton({
   const toneColor =
     choice.tone === 'up' ? theme.colors.up : choice.tone === 'down' ? theme.colors.down : theme.colors.text;
   const revealed = share !== undefined;
+  // A faint tint makes Green/Red feel tappable. Dropped once the split is revealed so it can't be mistaken for it.
+  const tint =
+    revealed || !choice.tone || choice.tone === 'neutral'
+      ? theme.colors.surfaceRaised
+      : choice.tone === 'up'
+        ? theme.colors.upSoft
+        : theme.colors.downSoft;
 
   return (
     <Press
@@ -190,7 +197,7 @@ function ChoiceButton({
         borderRadius: theme.radius.md,
         borderWidth: selected ? 2 : 1,
         borderColor: selected ? theme.colors.accent : theme.colors.border,
-        backgroundColor: theme.colors.surfaceRaised,
+        backgroundColor: tint,
         overflow: 'hidden',
         justifyContent: 'center',
         paddingHorizontal: theme.space.lg,

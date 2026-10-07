@@ -27,7 +27,7 @@ export default function HomeScreen() {
               {home.status.label} · {home.status.detail}
             </T>
           </View>
-          <T variant="headline" accessibilityRole="summary">
+          <T variant="bodyStrong" accessibilityRole="summary">
             {home.headline}
           </T>
         </View>

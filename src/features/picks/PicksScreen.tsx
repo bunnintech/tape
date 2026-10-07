@@ -55,7 +55,7 @@ export default function PicksScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.bg }}>
       <TopBar title="Picks" />
-      <Screen>
+      <Screen contentStyle={{ flexGrow: 1 }}>
         <View style={{ gap: theme.space.md }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <T variant="bodyStrong">Tomorrow’s five</T>
@@ -67,7 +67,8 @@ export default function PicksScreen() {
         </View>
 
         {q ? (
-          <>
+          // Sit the question in the optical middle of the screen instead of leaving a blank lower half.
+          <View style={{ flex: 1, justifyContent: 'center', gap: theme.space.xxl, paddingBottom: theme.space.xxxl }}>
             <Card style={{ padding: theme.space.xl }}>
               <QuestionCard key={q.id} question={q} size="lg" onPicked={onPicked} />
             </Card>
@@ -89,7 +90,7 @@ export default function PicksScreen() {
                 </T>
               </Press>
             )}
-          </>
+          </View>
         ) : (
           <Summary ids={ids} onRevisit={(i) => setIndex(i)} />
         )}

@@ -211,6 +211,8 @@ function Stat({ label, value, suffix }: { label: string; value: string; suffix?:
 function ExpertiseRow({ e }: { e: ExpertiseScore }) {
   const theme = useTheme();
   const fill = Math.max(4, Math.min(100, e.percentile));
+  // Fade weaker categories so a Top 2% bar and a Top 33% bar don't read the same.
+  const strength = 0.35 + 0.65 * Math.max(0, Math.min(1, (e.percentile - 50) / 50));
   return (
     <View style={{ paddingVertical: theme.space.md, gap: theme.space.sm }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -220,7 +222,15 @@ function ExpertiseRow({ e }: { e: ExpertiseScore }) {
         </T>
       </View>
       <View style={{ height: 6, borderRadius: 3, backgroundColor: theme.colors.border, overflow: 'hidden' }}>
-        <View style={{ width: `${fill}%`, height: '100%', backgroundColor: theme.colors.accent, borderRadius: 3 }} />
+        <View
+          style={{
+            width: `${fill}%`,
+            height: '100%',
+            backgroundColor: theme.colors.accent,
+            opacity: strength,
+            borderRadius: 3,
+          }}
+        />
       </View>
     </View>
   );

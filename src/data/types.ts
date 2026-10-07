@@ -174,6 +174,18 @@ export type Comment = {
   eventId: string;
   author: string;
   authorBadge?: string; // e.g. "NVDA Top 3%"
-  body: string;
+  body: string; // empty when the comment is a sticker
+  stickerId?: StickerId;
   at: string;
 };
+
+/** Original Tape sticker art (see src/components/Sticker.tsx). No real people, logos or third-party memes. */
+export type StickerId =
+  | 'bull-lets-go'
+  | 'bear-pain'
+  | 'to-the-moon'
+  | 'diamond-hands'
+  | 'called-it'
+  | 'priced-in'
+  | 'popcorn'
+  | 'not-like-this';

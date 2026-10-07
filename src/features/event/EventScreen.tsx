@@ -1,11 +1,14 @@
+import * as Haptics from 'expo-haptics';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { Platform, TextInput, View } from 'react-native';
 
 import { Button, Card, DemoBadge, Divider, Icon, LiveDot, Press, Screen, Section, T } from '@/components/primitives';
 import { QuestionCard } from '@/components/QuestionCard';
+import { Sticker } from '@/components/Sticker';
 import { dataSource } from '@/data/source';
-import type { EventUpdate, ExpectedVsActual, ReactionKey } from '@/data/types';
+import { STICKERS } from '@/data/stickers';
+import type { EventUpdate, ExpectedVsActual, ReactionKey, StickerId } from '@/data/types';
 import { clockTime, formatCount, relativeTime } from '@/domain/format';
 import { useNow, useStore } from '@/state/store';
 import { useTheme } from '@/theme';
@@ -226,12 +229,19 @@ function Discussion({ eventId, count }: { eventId: string; count: number }) {
   const now = useNow(30_000);
   const { state, addComment } = useStore();
   const [draft, setDraft] = useState('');
+  const [trayOpen, setTrayOpen] = useState(false);
   const comments = [...dataSource.listComments(eventId), ...state.myComments.filter((c) => c.eventId === eventId)];
 
   const submit = () => {
     if (!draft.trim()) return;
     addComment(eventId, draft);
     setDraft('');
+  };
+
+  const sendSticker = (id: StickerId) => {
+    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    addComment(eventId, '', id);
+    setTrayOpen(false);
   };
 
   return (
@@ -254,10 +264,57 @@ function Discussion({ eventId, count }: { eventId: string; count: number }) {
                 {relativeTime(c.at, now)}
               </T>
             </View>
-            <T variant="callout">{c.body}</T>
+            {c.stickerId ? <Sticker id={c.stickerId} size={104} /> : <T variant="callout">{c.body}</T>}
           </View>
         ))}
+        {trayOpen ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              rowGap: theme.space.sm,
+              padding: theme.space.md,
+              borderRadius: theme.radius.lg,
+              backgroundColor: theme.colors.surface,
+              borderWidth: 1,
+              borderColor: theme.colors.border,
+            }}
+          >
+            {STICKERS.map((st) => (
+              <Press
+                key={st.id}
+                onPress={() => sendSticker(st.id)}
+                accessibilityLabel={`Send ${st.label} sticker`}
+                style={{ width: '25%', alignItems: 'center' }}
+              >
+                <Sticker id={st.id} size={72} />
+              </Press>
+            ))}
+          </View>
+        ) : null}
         <View style={{ flexDirection: 'row', gap: theme.space.sm, alignItems: 'center' }}>
+          <Press
+            onPress={() => setTrayOpen((o) => !o)}
+            accessibilityLabel={trayOpen ? 'Close stickers' : 'Stickers'}
+            accessibilityState={{ expanded: trayOpen }}
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: theme.radius.pill,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderWidth: 1,
+              borderColor: trayOpen ? theme.colors.accent : theme.colors.border,
+              backgroundColor: trayOpen ? theme.colors.accentSoft : 'transparent',
+            }}
+          >
+            <Icon
+              name={trayOpen ? 'x' : 'smile'}
+              size={20}
+              color={trayOpen ? theme.colors.accent : theme.colors.textSecondary}
+            />
+          </Press>
           <TextInput
             value={draft}
             onChangeText={setDraft}
@@ -268,6 +325,7 @@ function Discussion({ eventId, count }: { eventId: string; count: number }) {
             maxLength={280}
             style={{
               flex: 1,
+              minWidth: 0,
               minHeight: 44,
               borderRadius: theme.radius.pill,
               borderWidth: 1,

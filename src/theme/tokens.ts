@@ -35,6 +35,40 @@ export const palette = {
   accentLight: '#5B45F0',
 } as const;
 
+/**
+ * Sticker illustration inks. Art only: never use these for UI chrome or market direction.
+ * Deliberately no green or red so a sticker can't be read as up/down or right/wrong.
+ */
+export const illustration = {
+  cut: '#FFFFFF',
+  cutShadow: 'rgba(0,0,0,0.18)',
+  ink: '#17151F',
+  white: '#FFFFFF',
+  bull: '#9A5B34',
+  bullDark: '#6E3E22',
+  horn: '#F4E6C8',
+  snout: '#E8B49A',
+  bear: '#5E4433',
+  bearLight: '#B98E6A',
+  tear: '#5BB8F2',
+  hull: '#F2F1F7',
+  violet: '#7B66FF',
+  flame: '#FF9F1C',
+  flameCore: '#FFD84D',
+  moon: '#FFE48A',
+  diamond: '#8EE7F7',
+  diamondDeep: '#33BFDC',
+  diamondLight: '#D6F8FF',
+  gold: '#F2B92B',
+  bottle: '#2E3A6B',
+  cork: '#C8976A',
+  paper: '#FFF8E8',
+  popcorn: '#FFF2C6',
+  popcornEdge: '#F2C14E',
+  face: '#FFCC33',
+  faceDark: '#F0AE0C',
+} as const;
+
 export type ThemeColors = {
   bg: string;
   surface: string;

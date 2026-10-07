@@ -141,7 +141,7 @@ user_predictions, settlements, rating_snapshots, expertise_scores, comments, rea
 
 ### T-23 · Realtime event timelines (Supabase Realtime on `event_updates`)
 
-### T-24 · Reactions + comments persisted, rate-limited (e.g. 1 comment / 10s)
+### T-24 · Reactions + comments persisted, rate-limited (e.g. 1 comment / 10s). Includes sticker comments (`sticker_id`, see D-005)
 
 ### T-25 · Moderation: report button, auto-hide at N reports, banned-terms list, admin queue. Rules cover spam,
 

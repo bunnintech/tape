@@ -2,7 +2,21 @@
 
 Product-affecting implementation decisions. Newest first. Each one says what was decided, why, and what would reverse it.
 
-## D-004 · Rating is "edge over the crowd", not a running Elo
+## D-005 · Discussion stickers are original art only
+
+**Decided:** Event discussions get a sticker tray (8 original stickers: bull, bear, rocket, diamond, champagne, "priced in"
+stamp, popcorn, worried face). Stickers are vector art in `src/components/Sticker.tsx` and are sent as a comment with
+`stickerId` instead of text. No real people's faces, company logos or third-party meme images.
+
+**Why:** The goal is the fun, sports-app meme energy. Real faces (e.g. CEOs) carry right-of-publicity and photo-copyright
+risk in a commercial app, and logos carry trademark risk. Original art keeps the fun and we own it outright. Sticker
+inks avoid market green/red so a sticker never reads as up/down or right/wrong.
+
+**Open:** The art is a first pass, drawn in code. Commission a real illustrator before beta. User-uploaded or GIF-search
+stickers would need moderation (T-25) and a licensed provider first. Persisting sticker comments rides on T-24
+(`comments.sticker_id`).
+
+· Rating is "edge over the crowd", not a running Elo
 
 **Decided:** `rating = 1500 + 1000 × shrunk, recency-weighted mean of (outcome − crowdShareAtPick)`.
 

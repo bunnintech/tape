@@ -246,11 +246,28 @@ export const seedComments: Comment[] = [
     at: at.minutes(-12),
   },
   {
+    id: 'c2s',
+    eventId: 'ev-nvda-q3',
+    author: 'tk_trades',
+    body: '',
+    stickerId: 'priced-in',
+    at: at.minutes(-11),
+  },
+  {
     id: 'c3',
     eventId: 'ev-nvda-q3',
     author: 'priya_s',
     body: 'Supply comment on the call is the bullish part for me.',
     at: at.minutes(-5),
+  },
+  {
+    id: 'c3s',
+    eventId: 'ev-nvda-q3',
+    author: 'mara.k',
+    authorBadge: 'NVDA Top 2%',
+    body: '',
+    stickerId: 'called-it',
+    at: at.minutes(-3),
   },
   {
     id: 'c4',

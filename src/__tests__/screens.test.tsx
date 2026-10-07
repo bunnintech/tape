@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import type { ReactElement } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import EventScreen from '@/features/event/EventScreen';
 import HomeScreen from '@/features/home/HomeScreen';
 import PicksScreen from '@/features/picks/PicksScreen';
 import YouScreen from '@/features/you/YouScreen';
@@ -73,5 +74,21 @@ describe('You', () => {
     expect(screen.getByText('Streak')).toBeTruthy();
     expect(screen.getByText('Best at')).toBeTruthy();
     expect(screen.getByText('Company expertise')).toBeTruthy();
+  });
+});
+
+describe('Event discussion stickers', () => {
+  it('sends a sticker from the tray into the discussion', async () => {
+    await wrap(<EventScreen eventId="ev-nvda-q3" />);
+    expect(screen.queryByLabelText('Send Pain sticker')).toBeNull();
+    expect(screen.queryByLabelText('Pain sticker')).toBeNull();
+
+    await fireEvent.press(screen.getByLabelText('Stickers'));
+    await fireEvent.press(screen.getByLabelText('Send Pain sticker'));
+
+    expect(screen.getByLabelText('Pain sticker')).toBeTruthy();
+    expect(screen.getByText('You')).toBeTruthy();
+    // Tray closes after sending.
+    expect(screen.queryByLabelText('Send Pain sticker')).toBeNull();
   });
 });

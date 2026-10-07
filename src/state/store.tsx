@@ -19,7 +19,7 @@ import { DEMO_NOW } from '@/data/fixtures/clock';
 import { demoHistory } from '@/data/fixtures/profile';
 import { demoOutcomes } from '@/data/fixtures/questions';
 import { dataSource } from '@/data/source';
-import type { Comment, ReactionKey, SettledPick, Settlement, UserPrediction } from '@/data/types';
+import type { Comment, ReactionKey, SettledPick, Settlement, StickerId, UserPrediction } from '@/data/types';
 import { makePick, settlePick } from '@/domain/picks';
 
 type State = {
@@ -119,7 +119,8 @@ type Store = {
   reset: () => void;
   toggleFollow: (assetId: string) => void;
   toggleReaction: (updateId: string, key: ReactionKey) => void;
-  addComment: (eventId: string, body: string) => void;
+  /** Post text, or a sticker (body is then ignored). */
+  addComment: (eventId: string, body: string, stickerId?: StickerId) => void;
   settlementFor: (questionId: string) => Settlement | undefined;
 };
 
@@ -146,11 +147,20 @@ export function StoreProvider({ children, initial }: { children: ReactNode; init
       reset: () => dispatch({ type: 'reset' }),
       toggleFollow: (assetId) => dispatch({ type: 'toggleFollow', assetId }),
       toggleReaction: (updateId, key) => dispatch({ type: 'toggleReaction', updateId, key }),
-      addComment: (eventId, body) =>
+      addComment: (eventId, body, stickerId) => {
+        if (!stickerId && !body.trim()) return;
         dispatch({
           type: 'comment',
-          comment: { id: `me-${Date.now()}`, eventId, author: 'you', body: body.trim(), at: new Date().toISOString() },
-        }),
+          comment: {
+            id: `me-${Date.now()}`,
+            eventId,
+            author: 'you',
+            body: stickerId ? '' : body.trim(),
+            ...(stickerId ? { stickerId } : {}),
+            at: new Date().toISOString(),
+          },
+        });
+      },
       settlementFor: (qid) => state.settlements.find((s) => s.questionId === qid),
     }),
     [state, pick],
